@@ -1,69 +1,123 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+
+const MAX_LENGTH = 1000;
 
 export default function Home() {
+  const [idea, setIdea] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleGenerate = () => {
+    if (!idea.trim()) {
+      setMessage("Please describe your business idea first.");
+      return;
+    }
+
+    setMessage("Pitch generation will be connected in the next step.");
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-5 py-10 sm:px-8 sm:py-14">
+        {/* Header */}
+        <header className="mb-12 text-center sm:mb-16">
+          <div className="mb-5 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 backdrop-blur">
+            AI-powered business pitching
+          </div>
+
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+            Quick<span className="text-blue-400">Pitch</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-400 sm:text-lg">
+            Turn a rough business idea into a clear, structured pitch in
+            seconds.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+        </header>
+
+        {/* Input Section */}
+        <section className="mx-auto w-full max-w-3xl">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-2xl shadow-black/20 sm:p-7">
+            <div className="mb-4">
+              <label
+                htmlFor="business-idea"
+                className="text-sm font-semibold text-slate-200"
+              >
+                Describe your business idea
+              </label>
+
+              <p className="mt-1 text-sm text-slate-500">
+                It can be rough — just explain what you have in mind.
+              </p>
+            </div>
+
+            <textarea
+              id="business-idea"
+              value={idea}
+              onChange={(e) => {
+                setIdea(e.target.value);
+                setMessage("");
+              }}
+              maxLength={MAX_LENGTH}
+              rows={7}
+              placeholder="Example: A subscription service that delivers healthy, affordable snacks to college students..."
+              className="w-full resize-none rounded-xl border border-white/10 bg-slate-900/80 px-4 py-4 text-sm leading-6 text-white outline-none placeholder:text-slate-600 transition focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/20"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+            <div className="mt-2 flex items-center justify-between">
+              <span className="text-xs text-slate-600">
+                Keep it simple and specific.
+              </span>
+
+              <span className="text-xs text-slate-500">
+                {idea.length}/{MAX_LENGTH}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGenerate}
+              className="mt-5 w-full rounded-xl bg-blue-500 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-2 focus:ring-offset-slate-950 active:scale-[0.99]"
+            >
+              Generate Pitch
+            </button>
+
+            {message && (
+              <p className="mt-3 text-center text-sm text-slate-400">
+                {message}
+              </p>
+            )}
+          </div>
+        </section>
+
+        {/* Future Result Area */}
+        <section className="mx-auto mt-8 w-full max-w-3xl">
+          <div className="min-h-72 rounded-2xl border border-dashed border-white/10 bg-white/[0.02] p-6 sm:p-8">
+            <div className="flex h-full min-h-56 flex-col items-center justify-center text-center">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-xl">
+                ✦
+              </div>
+
+              <h2 className="text-base font-semibold text-slate-300">
+                Your pitch will appear here
+              </h2>
+
+              <p className="mt-2 max-w-md text-sm leading-6 text-slate-600">
+                Your structured pitch will include an idea summary, target
+                customer, value proposition, and growth ideas.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="mt-auto pt-12 text-center">
+          <p className="text-xs text-slate-600">
+            QuickPitch · Simple ideas. Clear pitches.
+          </p>
+        </footer>
+      </div>
+    </main>
   );
 }
